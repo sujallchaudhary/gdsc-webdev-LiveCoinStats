@@ -49,6 +49,9 @@ const fetchUsers = async (req, res) => {
         if(!users){
             return res.status(200).json({success:false,status:400,message:'No users found'});
         }
+        users.map((user) => {
+            user.password = undefined;
+        });
         res.status(200).json({success:true,status:200,message:'Users fetched successfully',data:users});
     }
     catch(error){
