@@ -8,7 +8,7 @@ import RandomNumberChart from './RandomNumberChart';
 import io from 'socket.io-client';
 
 
-const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = "https://gdscbackend.sujal.info";
 const SOCKET_URL_2 = "https://data.gdscnsut.com";
 
 const Dashboard = () => {
