@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import TopSection from './TopSection';
 import Table from './Table';
 import io from 'socket.io-client';
+import { useNavigate } from 'react-router-dom';
 
 const SOCKET_URL = "https://gdscbackend.sujal.info";
 function roundNum(number){
@@ -10,9 +11,16 @@ function roundNum(number){
   }
 
 function AllCurrency() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
+    }
+  }, []);
   const columns = ['symbol', 'price'];
   const [selectedCurrency, setSelectedCurrency] = useState('BTCUSDT');
   const [priceData, setPriceData] = useState([]);
+
 
   const handleCurrencyChange = (currency) => {
     setSelectedCurrency(currency);

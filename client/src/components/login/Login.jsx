@@ -1,17 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {Link,useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [alert, setAlert] = useState(null);
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
   const showAlert = (message, color) => {
-    setAlert({ message, color });
-    setTimeout(() => setAlert(null), 3000);
+    const newAlert = document.createElement('div');
+    newAlert.classList.add(
+      'fixed',
+      'top-5',
+      'right-5',
+      'text-white',
+      'px-4',
+      'py-3',
+      'rounded-lg',
+      'shadow-lg',
+      'alerts',
+      'z-50'
+    );
+    newAlert.innerHTML = message;
+    newAlert.style.backgroundColor = color;
+    document.body.insertBefore(newAlert, document.body.firstChild);
+    setTimeout(() => {
+      newAlert.remove();
+    }, 2000);
   };
 
   const login = async () => {
@@ -55,12 +72,13 @@ const Login = () => {
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100">
       <div className="flex max-w-4xl w-full shadow-lg rounded-lg overflow-hidden">
-        <div  style={{ backgroundImage: 'url(https://i.pinimg.com/originals/8c/3d/9e/8c3d9e9bc113c82b278b7925060e4ef0.gif)' }} className="hidden lg:block lg:w-1/2 bg-gray-900 p-8 bg-cover bg-center bg-no-repeat">
-        </div>
+        <div
+          style={{ backgroundImage: 'url(https://i.pinimg.com/originals/8c/3d/9e/8c3d9e9bc113c82b278b7925060e4ef0.gif)' }}
+          className="hidden lg:block lg:w-1/2 bg-gray-900 p-8 bg-cover bg-center bg-no-repeat"
+        ></div>
         <div className="w-full lg:w-1/2 p-8 bg-white">
-        <h2 className="text-3xl font-bold text-black mb-4">LiveCoinStats</h2>
+          <h2 className="text-3xl font-bold text-black mb-4">Aspirion</h2>
           <h2 className="text-2xl font-bold text-gray-700">Login</h2>
-          {alert && <div className={`text-white p-3 mb-4 bg-${alert.color}-600`}>{alert.message}</div>}
           <form onSubmit={handleSubmit} className="mt-6">
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
@@ -71,7 +89,7 @@ const Login = () => {
                 placeholder="Enter your email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                required={true}
+                required
               />
             </div>
             <div className="mb-6">
@@ -83,7 +101,7 @@ const Login = () => {
                 placeholder="Enter your password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
-                required={true}
+                required
               />
             </div>
             <div className="flex items-center justify-between">

@@ -30,9 +30,9 @@ const Sidebar = () => {
             <span>All Users</span>
           </Link>
         </nav>
-        <a href="#" className="flex items-center space-x-2 text-lg mt-4 absolute bottom-10">
+        <Link to="/logout" className="flex items-center space-x-2 text-lg mt-4 absolute bottom-10">
           <span>Log out</span>
-        </a>
+        </Link>
       </div>
       {isOpen && (
         <div 

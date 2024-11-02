@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import TopSection from './TopSection';
 import Table from './Table';
+import { useNavigate } from 'react-router-dom';
 
 const columns = ['userName', 'email'];
 const fetchUserData = async () => {
@@ -16,6 +17,12 @@ const fetchUserData = async () => {
 };
 
 function AllUsers() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
+    }
+  }, []);
   const [data, setData] = useState([]);
   const [selectedCurrency, setSelectedCurrency] = useState('BTCUSDT');
 const handleCurrencyChange = (currency) => {
@@ -25,7 +32,6 @@ const handleCurrencyChange = (currency) => {
     const getData = async () => {
       try {
         const userData = await fetchUserData();
-        console.log(userData.data);
         setData(userData.data);
       } catch (err) {
         setError('Failed to fetch data');

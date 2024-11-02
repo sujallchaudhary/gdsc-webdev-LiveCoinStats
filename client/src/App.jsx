@@ -7,6 +7,7 @@ import ResetPassword from './components/resetPassword/ResetPassword';
 import Dashboard from './components/dashboard/Index';
 import AllUsers from './components/dashboard/allUsers';
 import AllCurrency from './components/dashboard/AllCurrency';
+import Logout from './components/dashboard/Logout';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/allUsers" element={<AllUsers />} />
         <Route path="/dashboard/allCurrency" element={<AllCurrency />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </Router>
   );

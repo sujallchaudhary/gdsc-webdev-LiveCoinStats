@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopSection from './TopSection';
 import StatsSection from './StatsSection';
@@ -6,10 +7,17 @@ import AnalyticsChart from './AnalyticsChart';
 import RandomNumberChart from './RandomNumberChart';
 import io from 'socket.io-client';
 
-const SOCKET_URL = "https://gdscbackend.sujal.info";
+
+const SOCKET_URL = "http://localhost:5000";
 const SOCKET_URL_2 = "https://data.gdscnsut.com";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
+    }
+  }, []);
   const [currencyPrice, setCurrencyPrice] = useState({});
   const [selectedCurrency, setSelectedCurrency] = useState('BTCUSDT');
   const [randomNumber, setRandomNumber] = useState(0);
@@ -17,7 +25,7 @@ const Dashboard = () => {
 
   const fetchInitialCurrencyData = async (currency) => {
     try {
-      const response = await fetch(`${SOCKET_URL}/price?currency=${currency}`,{
+      const response = await fetch(`${SOCKET_URL}/price/all`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +33,11 @@ const Dashboard = () => {
         }
       });
       const data = await response.json();
-      setCurrencyPrice(data.data);
+      data.data = data.data.map(d => {
+        if(d.symbol === currency){
+          setCurrencyPrice(d);
+        }
+      });
     } catch (error) {
       console.error('Error fetching initial currency data from API:', error);
     }
@@ -39,14 +51,16 @@ const Dashboard = () => {
     const newSocket = io(SOCKET_URL);
     const newSocket2 = io(SOCKET_URL_2);
 
-    newSocket.on('cryptoPrice', (priceData) => {
-      if(priceData.symbol === selectedCurrency){
-        setCurrencyPrice(priceData);
+    newSocket.on('allCurrency', (priceData) => {
+      priceData = priceData.map(d => {
+      if(d.symbol === selectedCurrency){
+        setCurrencyPrice(d);
       }
       else{
         return;
       }
     });
+  });
 
     newSocket2.on('random_number', (newData) => {
       setRandomNumber(newData.number);

@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState,useEffect} from 'react';
 const TopSection = ({ heading, style, onCurrencyChange }) => {
   const userData = localStorage.getItem('userData');
+  if(!userData){
+    return null;
+  }
   const userName = JSON.parse(userData).userName;
   const currency = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'DOGEUSDT'];
   const [priceFilter, setPriceFilter] = useState('BTCUSDT');

@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const http = require('http');
 const { Server } = require('socket.io');
-const { getCryptoPrice, getAllCryptoPrice } = require('./controllers/cryptoPriceController');
+const {getAllCryptoPrice } = require('./controllers/cryptoPriceController');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -28,15 +28,6 @@ app.use('/price', cryptoPriceRoute);
 io.on('connection', (socket) => {
     console.log('Client connected:', socket.id);
     let priceUpdateInterval = null;
-
-    socket.on('currencyChange', (data) => {
-        console.log('Currency change data received:', data);
-        if (priceUpdateInterval) {
-            clearInterval(priceUpdateInterval);
-        }
-        priceUpdateInterval = getCryptoPrice(socket, data);
-    });
-
     socket.on('disconnect', () => {
         console.log('Client disconnected:', socket.id);
         if (priceUpdateInterval) {
